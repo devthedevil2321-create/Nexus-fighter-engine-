@@ -1,0 +1,20 @@
+{
+  "name": "nexus-fighter-engine",
+  "version": "2.0.0",
+  "description": "A Standalone, Offline-Capable 3D Anime Fighting Engine",
+  "main": "js/main.js",
+  "type": "module",
+  "scripts": {
+    "test": "node test_engine.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devthedevil2321-create/Nexus-fighter-engine-.git"
+  },
+  "author": "Dev Aradhya Swain",
+  "license": "MIT",
+  "dependencies": {
+    "fflate": "^0.8.3",
+    "three": "^0.186.1"
+  }
+}

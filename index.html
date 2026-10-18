@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Nexus Fighter Engine 02</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app-container">
+    <!-- Top Navigation Bar -->
+    <header class="top-nav">
+      <div class="logo">NEXUS <span>ENGINE</span></div>
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="home">HOME</button>
+        <button class="nav-tab" data-tab="scene">SCENE EDITOR</button>
+        <button class="nav-tab" data-tab="character">CHARACTER</button>
+        <button class="nav-tab" data-tab="animation">ANIMATION LAB</button>
+        <button class="nav-tab" data-tab="combat">COMBAT CONFIG</button>
+        <button class="nav-tab" data-tab="arena">ARENA</button>
+        <button class="nav-tab" data-tab="project">PROJECT</button>
+        <button class="nav-tab" data-tab="settings">SETTINGS</button>
+      </nav>
+      <div class="quick-actions">
+        <button id="btn-toggle-battle" class="btn-battle-start">START BATTLE</button>
+      </div>
+    </header>
+
+    <!-- Main Viewport and Panels Workspace -->
+    <main class="workspace">
+      <!-- 3D Viewport -->
+      <div id="viewport-container">
+        <canvas id="render-canvas"></canvas>
+
+        <!-- Battle Mode Overlay (PSP Controls & HUD) -->
+        <div id="battle-overlay" class="hidden">
+          <div class="health-bars-container">
+            <!-- Player HUD -->
+            <div class="fighter-hud">
+              <div id="player-name-display" class="fighter-name">PLAYER 1</div>
+              <div class="bar-bg">
+                <div id="player-health-bar" class="bar-fill" style="width: 100%;"></div>
+              </div>
+            </div>
+
+            <!-- Enemy HUD -->
+            <div class="fighter-hud">
+              <div id="enemy-name-display" class="fighter-name" style="text-align: right;">ENEMY AI</div>
+              <div class="bar-bg">
+                <div id="enemy-health-bar" class="bar-fill enemy" style="width: 100%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Triggers -->
+          <div class="top-triggers">
+            <button id="btn-trigger-l" class="trigger-btn">L (BLOCK)</button>
+            <button id="btn-trigger-r" class="trigger-btn">R (DODGE)</button>
+            <button id="btn-trigger-jump" class="trigger-btn">JUMP</button>
+            <button id="btn-trigger-exit" class="trigger-btn" style="background: var(--primary-red);">EXIT BATTLE</button>
+          </div>
+
+          <!-- PSP Touch Controls -->
+          <div class="psp-controls">
+            <!-- Left Joystick -->
+            <div id="joystick-base" class="joystick-container">
+              <div id="joystick-thumb" class="joystick-thumb"></div>
+            </div>
+
+            <!-- Right PSP Diamond Buttons -->
+            <div class="psp-diamond">
+              <button id="btn-psp-triangle" class="psp-btn triangle">△</button>
+              <button id="btn-psp-circle" class="psp-btn circle">○</button>
+              <button id="btn-psp-cross" class="psp-btn cross">×</button>
+              <button id="btn-psp-square" class="psp-btn square">□</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Editor Side Panel -->
+      <aside id="side-panel" class="side-panel">
+        <!-- HOME / QUICK START -->
+        <div id="tab-content-home" class="panel-tab-content">
+          <div class="panel-section">
+            <div class="panel-title">DROP ASSETS HERE</div>
+            <div id="drop-zone" class="drop-zone">
+              <strong>DRAG & DROP 3D ASSET</strong>
+              <p>.GLB, .GLTF, textures, or audio</p>
+              <input type="file" id="file-input" style="display: none;" accept=".glb,.gltf,.mp3,.wav,.png,.jpg">
+            </div>
+          </div>
+          <div class="panel-section">
+            <div class="panel-title">ENGINE STATUS</div>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">
+              Engine Mode: <strong id="status-mode" style="color: var(--primary-red);">EDITOR</strong><br>
+              Graphics Quality: <strong id="status-quality">MEDIUM</strong><br>
+              Offline Ready: <strong style="color: #00ff66;">YES</strong>
+            </p>
+          </div>
+        </div>
+
+        <!-- SCENE EDITOR -->
+        <div id="tab-content-scene" class="panel-tab-content" style="display: none;">
+          <div class="panel-section">
+            <div class="panel-title">SCENE SETTINGS</div>
+            <div class="form-group">
+              <label>Hitbox Debug Overlay</label>
+              <select id="select-hitbox-debug" class="form-control">
+                <option value="true">SHOW HITBOXES</option>
+                <option value="false">HIDE HITBOXES</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHARACTER EDITOR -->
+        <div id="tab-content-character" class="panel-tab-content" style="display: none;">
+          <div class="panel-section">
+            <div class="panel-title">PLAYER STATS</div>
+            <div class="form-group">
+              <label>Fighter Name</label>
+              <input type="text" id="input-player-name" class="form-control" value="Red Warrior">
+            </div>
+            <div class="form-group">
+              <label>Movement Speed</label>
+              <input type="range" id="input-player-speed" min="2" max="12" value="6" step="0.5">
+            </div>
+          </div>
+        </div>
+
+        <!-- COMBAT CONFIG -->
+        <div id="tab-content-combat" class="panel-tab-content" style="display: none;">
+          <div class="panel-section">
+            <div class="panel-title">AI DIFFICULTY</div>
+            <div class="form-group">
+              <select id="select-ai-difficulty" class="form-control">
+                <option value="EASY">EASY</option>
+                <option value="NORMAL" selected>NORMAL</option>
+                <option value="HARD">HARD</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECT MANAGER -->
+        <div id="tab-content-project" class="panel-tab-content" style="display: none;">
+          <div class="panel-section">
+            <div class="panel-title">PROJECT EXPORT / IMPORT</div>
+            <button id="btn-export-project" class="trigger-btn" style="width: 100%; margin-bottom: 8px;">EXPORT ZIP</button>
+            <button id="btn-import-project" class="trigger-btn" style="width: 100%;">IMPORT ZIP</button>
+          </div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div id="tab-content-settings" class="panel-tab-content" style="display: none;">
+          <div class="panel-section">
+            <div class="panel-title">GRAPHICS QUALITY</div>
+            <div class="form-group">
+              <select id="select-graphics-quality" class="form-control">
+                <option value="LOW">LOW</option>
+                <option value="MEDIUM" selected>MEDIUM</option>
+                <option value="HIGH">HIGH</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- Entry Script -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
