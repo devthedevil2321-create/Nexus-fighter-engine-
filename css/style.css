@@ -1,0 +1,357 @@
+/* Dark Anime Fighting Engine Theme */
+:root {
+  --bg-dark: #0f0f15;
+  --bg-panel: #181822;
+  --bg-panel-header: #202030;
+  --primary-red: #ff2244;
+  --accent-crimson: #d61c38;
+  --text-main: #f0f0f8;
+  --text-muted: #a0a0b8;
+  --border-color: #2a2a3c;
+  --gold-accent: #ffcc00;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-dark);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-main);
+}
+
+#app-container {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Top Navigation Bar */
+header.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  background-color: var(--bg-panel);
+  border-bottom: 2px solid var(--primary-red);
+  padding: 0 15px;
+  z-index: 100;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: 1.5px;
+  color: var(--text-main);
+}
+
+.logo span {
+  color: var(--primary-red);
+}
+
+nav.nav-tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+}
+
+.nav-tab {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 8px 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.nav-tab:hover {
+  color: var(--text-main);
+  background: rgba(255, 34, 68, 0.1);
+}
+
+.nav-tab.active {
+  color: #fff;
+  background: var(--primary-red);
+  box-shadow: 0 0 10px rgba(255, 34, 68, 0.4);
+}
+
+.quick-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-battle-start {
+  background: linear-gradient(135deg, var(--primary-red), var(--accent-crimson));
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  box-shadow: 0 0 12px rgba(255, 34, 68, 0.5);
+  transition: transform 0.1s ease;
+}
+
+.btn-battle-start:active {
+  transform: scale(0.95);
+}
+
+/* Main Content Area */
+main.workspace {
+  display: flex;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+#viewport-container {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#render-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Side Inspector Panels */
+.side-panel {
+  width: 320px;
+  background-color: var(--bg-panel);
+  border-left: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  overflow-y: auto;
+}
+
+.panel-section {
+  padding: 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.panel-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--primary-red);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Drag and Drop Zone */
+.drop-zone {
+  border: 2px dashed var(--primary-red);
+  border-radius: 6px;
+  padding: 20px 10px;
+  text-align: center;
+  background: rgba(255, 34, 68, 0.05);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.drop-zone:hover {
+  background: rgba(255, 34, 68, 0.15);
+}
+
+.drop-zone p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+/* Form Controls */
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.form-control, select {
+  width: 100%;
+  padding: 8px;
+  background: var(--bg-dark);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+/* Battle Overlay & PSP Virtual Controller */
+#battle-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px;
+  z-index: 50;
+}
+
+#battle-overlay.hidden {
+  display: none;
+}
+
+/* Health Bars */
+.health-bars-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  pointer-events: auto;
+}
+
+.fighter-hud {
+  width: 42%;
+  background: rgba(15, 15, 21, 0.85);
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.fighter-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.bar-bg {
+  width: 100%;
+  height: 16px;
+  background: #222;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid #444;
+}
+
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00ff66, #00bb44);
+  width: 100%;
+  transition: width 0.2s ease-out;
+}
+
+.bar-fill.enemy {
+  background: linear-gradient(90deg, #ff4400, var(--primary-red));
+}
+
+/* PSP Controller Layout */
+.psp-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  pointer-events: auto;
+  padding-bottom: 10px;
+}
+
+/* Left Joystick / D-Pad */
+.joystick-container {
+  width: 130px;
+  height: 130px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  position: relative;
+  touch-action: none;
+}
+
+.joystick-thumb {
+  width: 50px;
+  height: 50px;
+  background: var(--primary-red);
+  border-radius: 50%;
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  box-shadow: 0 0 10px rgba(255, 34, 68, 0.8);
+}
+
+/* PSP Right Diamond Action Buttons */
+.psp-diamond {
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
+
+.psp-btn {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(30, 30, 45, 0.85);
+  border: 2px solid var(--primary-red);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  touch-action: manipulation;
+}
+
+.psp-btn:active {
+  background: var(--primary-red);
+  transform: scale(0.9);
+}
+
+.psp-btn.triangle { top: 0; left: 52px; }
+.psp-btn.circle   { top: 52px; right: 0; }
+.psp-btn.cross    { bottom: 0; left: 52px; }
+.psp-btn.square   { top: 52px; left: 0; }
+
+/* Top Trigger / Utility Buttons */
+.top-triggers {
+  display: flex;
+  gap: 8px;
+  position: absolute;
+  top: 75px;
+  right: 15px;
+  pointer-events: auto;
+}
+
+.trigger-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.trigger-btn:active {
+  background: var(--primary-red);
+}
